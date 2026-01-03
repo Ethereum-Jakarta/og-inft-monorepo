@@ -1,0 +1,27 @@
+{
+  "TEEVerifierModule": {
+    "owner": "0xYourDeployerAddress",
+    "tdxQuote": "0x00",
+    "trustedMrtd": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trustedRtmr0": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trustedRtmr1": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trustedRtmr2": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trustedRtmr3": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "VerifierModule": {
+    "owner": "0xYourDeployerAddress",
+    "verifierType": 0
+  },
+  "AgentNFTModule": {
+    "owner": "0xYourDeployerAddress",
+    "nftName": "0G Agent NFT",
+    "nftSymbol": "0GI",
+    "storageInfo": "{\"chainURL\":\"https://evmrpc-testnet.0g.ai\",\"indexerURL\":\"https://indexer-storage-testnet-turbo.0g.ai\"}"
+  },
+  "AgentMarketModule": {
+    "owner": "0xYourDeployerAddress",
+    "initialFeeRate": "1000",
+    "initialMintFee": "100000000000000000",
+    "initialDiscountMintFee": "0"
+  }
+}
