@@ -44,16 +44,21 @@ export default defineConfig({
       accounts: [configVariable("PRIVATE_KEY")],
     },
   },
+  verify: {
+    etherscan: {
+      apiKey: 'YOUR_API_KEY'
+    }
+  },
   chainDescriptors: {
     16602: {
       name: 'zgTestnet',
       blockExplorers: {
         blockscout: {
-          apiUrl: zeroGGalileoTestnet.blockExplorers.default.url,
+          apiUrl: 'https://chainscan-galileo.0g.ai/open/api',
           url: zeroGGalileoTestnet.blockExplorers.default.url
         },
         etherscan: {
-          apiUrl: zeroGGalileoTestnet.blockExplorers.default.url,
+          apiUrl: 'https://chainscan-galileo.0g.ai/open/api',
           url: zeroGGalileoTestnet.blockExplorers.default.url
         }
       }
