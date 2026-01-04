@@ -49,13 +49,22 @@ PRIVATE_KEY=your_private_key_here
 EOF
 ```
 
-### 1.2 Compile Contracts
+### 1.2 Setup Parameters
+
+```bash
+# Copy the example parameters file
+cp ignition/parameters.example.json ignition/parameters.json
+```
+
+Edit `ignition/parameters.json` and replace all occurrences of `0xYourDeployerAddress` with your wallet address.
+
+### 1.3 Compile Contracts
 
 ```bash
 yarn hardhat compile
 ```
 
-### 1.3 Deploy to 0G Galileo Testnet
+### 1.4 Deploy to 0G Galileo Testnet
 
 The deployment uses Hardhat Ignition modules which handle the full deployment:
 - TEEVerifier (TEE verification)
@@ -66,12 +75,10 @@ The deployment uses Hardhat Ignition modules which handle the full deployment:
 # Deploy all contracts
 yarn hardhat ignition deploy ignition/modules/AgentNFT.ts \
   --network zgTestnet \
-  --parameters '{"AgentNFTModule": {"owner": "YOUR_WALLET_ADDRESS"}}'
+  --parameters ignition/parameters.json
 ```
 
-**Important:** Replace `YOUR_WALLET_ADDRESS` with your deployer address.
-
-### 1.4 Verify Deployment
+### 1.5 Verify Deployment
 
 After deployment, you'll see output like:
 ```
@@ -83,7 +90,7 @@ Deployed Addresses:
 
 Save these addresses - you'll need them for the executor service and frontend.
 
-### 1.5 Verify on Block Explorer (Optional)
+### 1.6 Verify on Block Explorer (Optional)
 
 ```bash
 yarn hardhat verify --network zgTestnet DEPLOYED_CONTRACT_ADDRESS
