@@ -130,6 +130,12 @@ OG_COMPUTE_API_KEY=your_api_key
 EOF
 ```
 
+To get your 0G Compute API key:
+
+```bash
+yarn 0g-compute-cli inference get-secret --provider 0xa48f01287233509FD694a22Bf840225062E67836
+```
+
 ### 2.2 Run Development Server
 
 ```bash
