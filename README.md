@@ -52,7 +52,7 @@ EOF
 ### 1.2 Compile Contracts
 
 ```bash
-npx hardhat compile
+yarn hardhat compile
 ```
 
 ### 1.3 Deploy to 0G Galileo Testnet
@@ -64,7 +64,7 @@ The deployment uses Hardhat Ignition modules which handle the full deployment:
 
 ```bash
 # Deploy all contracts
-npx hardhat ignition deploy ignition/modules/AgentNFT.ts \
+yarn hardhat ignition deploy ignition/modules/AgentNFT.ts \
   --network zgTestnet \
   --parameters '{"AgentNFTModule": {"owner": "YOUR_WALLET_ADDRESS"}}'
 ```
@@ -86,7 +86,7 @@ Save these addresses - you'll need them for the executor service and frontend.
 ### 1.5 Verify on Block Explorer (Optional)
 
 ```bash
-npx hardhat verify --network zgTestnet DEPLOYED_CONTRACT_ADDRESS
+yarn hardhat verify --network zgTestnet DEPLOYED_CONTRACT_ADDRESS
 ```
 
 View on explorer: https://chainscan-galileo.0g.ai
@@ -285,14 +285,14 @@ yarn workspaces foreach -A run build
 cd packages/0g-agent-inft
 
 # Compile
-npx hardhat compile
+yarn hardhat compile
 
 # Test
-npx hardhat test
+yarn hardhat test
 
 # Deploy to local network
-npx hardhat node
-npx hardhat ignition deploy ignition/modules/AgentNFT.ts --network localhost
+yarn hardhat node
+yarn hardhat ignition deploy ignition/modules/AgentNFT.ts --network localhost
 ```
 
 ### Adding New Agent Models
