@@ -81,15 +81,21 @@ yarn hardhat ignition deploy ignition/modules/AgentNFT.ts \
 
 ### 1.5 Verify Deployment
 
-After deployment, you'll see output like:
-```
-Deployed Addresses:
-- TEEVerifier: 0x...
-- Verifier: 0x...
-- AgentNFT: 0x...
-```
+After deployment, you'll see deployed addresses:
 
-Save these addresses - you'll need them for the executor service and frontend.
+![Deployed Addresses](docs/images/deployed-addresses.png)
+
+**Important:** Use the **proxy addresses** (at the bottom, without `Impl` or `Beacon` suffix):
+
+| Contract | Use Address From |
+|----------|------------------|
+| TEEVerifier | `TEEVerifierModule#TEEVerifier` |
+| Verifier | `VerifierModule#Verifier` |
+| AgentNFT | `AgentNFTModule#AgentNFT` |
+
+Do **NOT** use the `*Impl` (implementation) or `*Beacon` addresses directly.
+
+Save these proxy addresses - you'll need them for the executor service and frontend.
 
 ### 1.6 Verify on Block Explorer (Optional)
 
@@ -130,9 +136,10 @@ OG_COMPUTE_API_KEY=your_api_key
 EOF
 ```
 
-To get your 0G Compute API key:
+To get your 0G Compute API key (run from monorepo root):
 
 ```bash
+cd /path/to/og-inft-monorepo
 yarn 0g-compute-cli inference get-secret --provider 0xa48f01287233509FD694a22Bf840225062E67836
 ```
 
