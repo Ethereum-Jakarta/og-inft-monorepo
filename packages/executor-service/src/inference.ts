@@ -1,6 +1,7 @@
 import { config } from "./config.js";
+import type { AgentConfig } from "./storage.js";
 
-// Agent configurations (in production, decrypt from storage)
+// Agent configurations (fallback when no stored config)
 const agentConfigs = {
     default: {
         model: 'qwen/qwen-2.5-7b-instruct',
@@ -33,13 +34,36 @@ Be imaginative and engaging in your responses.`,
 } as const;
 
 /**
- * Run inference with 0G Compute
+ * Run inference with stored INFT config
+ */
+export async function runInferenceWithConfig(params: {
+    config: AgentConfig,
+    prompt: string,
+    context: { role: string, content: string }[]
+}) {
+    const { config: agentConfig, prompt, context = [] } = params;
+    return executeInference(agentConfig, prompt, context);
+}
+
+/**
+ * Run inference with preset agent type (fallback)
  */
 export async function runInference(params: { agentType: keyof typeof agentConfigs, prompt: string, context: { role: string, content: string }[] }) {
     const { agentType = 'default', prompt, context = [] } = params;
 
     // Get agent config
     const agentConfig = agentConfigs[agentType] || agentConfigs.default;
+    return executeInference(agentConfig, prompt, context);
+}
+
+/**
+ * Core inference execution
+ */
+async function executeInference(
+    agentConfig: { model: string; systemPrompt: string; temperature: number; maxTokens: number },
+    prompt: string,
+    context: { role: string; content: string }[]
+) {
 
     // Build messages
     const messages = [
@@ -81,7 +105,7 @@ export async function runInference(params: { agentType: keyof typeof agentConfig
         // Option 2: Mock response for demo
         return {
             success: true,
-            response: generateMockResponse(agentType, prompt),
+            response: generateMockResponseFromConfig(agentConfig, prompt),
             model: agentConfig.model,
             mock: true
         };
@@ -96,62 +120,33 @@ export async function runInference(params: { agentType: keyof typeof agentConfig
 }
 
 /**
- * Generate mock response for demo
+ * Generate mock response based on config
  */
-function generateMockResponse(agentType: keyof typeof agentConfigs, prompt: string) {
-    const responses = {
-        default: `I received your question: "${prompt.substring(0, 50)}..."
+function generateMockResponseFromConfig(
+    agentConfig: { model: string; systemPrompt: string; temperature: number; maxTokens: number },
+    prompt: string
+) {
+    const systemPromptPreview = agentConfig.systemPrompt.substring(0, 100);
 
-This is a demo response from the INFT executor service. In production, this would be powered by 0G Compute with real AI inference.
+    return `[INFT Agent - ${agentConfig.model}]
 
-Key points about INFT:
-1. Your authorization was verified on-chain
-2. The agent configuration was loaded
-3. AI inference was processed
-4. Response delivered securely`,
+Regarding your question: "${prompt.substring(0, 50)}..."
 
-        web3Expert: `[Web3 Expert Agent]
+**Agent Configuration:**
+- Model: ${agentConfig.model}
+- Temperature: ${agentConfig.temperature}
+- Max Tokens: ${agentConfig.maxTokens}
+- System Prompt: "${systemPromptPreview}..."
 
-Regarding your question about "${prompt.substring(0, 30)}...":
+**Response:**
+This is a demo response from your INFT agent. In production with 0G Compute configured, you would receive a real AI-generated response based on your agent's system prompt.
 
-Here's a technical explanation:
+Your request was successfully:
+1. Verified on-chain (authorization check passed)
+2. Matched to your stored agent configuration
+3. Processed through the inference pipeline
 
-1. **Smart Contract Perspective**:
-   The INFT system uses ERC-7857 standard which extends ERC-721 with encrypted metadata capabilities.
-
-2. **Security Model**:
-   - On-chain authorization verification
-   - Encrypted AI configurations
-   - Secure re-encryption on transfer
-
-3. **Code Example**:
-\`\`\`solidity
-function isAuthorized(uint256 tokenId, address user)
-    public view returns (bool) {
-    return ownerOf(tokenId) == user ||
-           usageAuths[tokenId][user].isActive;
-}
-\`\`\`
-
-This is a demo response. Real inference powered by 0G Compute coming soon!`,
-
-        creativAssistant: `✨ [Creative Assistant Agent]
-
-Your prompt sparked some creative thoughts about "${prompt.substring(0, 30)}...":
-
-🎨 **Creative Concept:**
-Imagine a world where NFTs aren't just static images, but living, breathing AI companions that grow and evolve with their owners.
-
-📝 **Story Hook:**
-"The moment I transferred the INFT, I felt a strange connection break. My AI companion of three years now belonged to someone else..."
-
-💡 **Marketing Angle:**
-"Own more than art. Own intelligence. INFT - Where AI meets NFT."
-
-This is a demo response showcasing the creative agent's personality!`
-    };
-
-    return responses[agentType] || responses.default;
+To enable real AI responses, configure OG_COMPUTE_URL and OG_COMPUTE_API_KEY in the executor service.`;
 }
 
 type AgentConfigs = typeof agentConfigs
