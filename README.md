@@ -72,10 +72,11 @@ The deployment uses Hardhat Ignition modules which handle the full deployment:
 - AgentNFT (with beacon proxy pattern)
 
 ```bash
-# Deploy all contracts
+# Deploy and verify all contracts
 yarn hardhat ignition deploy ignition/modules/AgentNFT.ts \
   --network zgTestnet \
-  --parameters ignition/parameters.json
+  --parameters ignition/parameters.json \
+  --verify
 ```
 
 ### 1.5 Verify Deployment
@@ -92,8 +93,10 @@ Save these addresses - you'll need them for the executor service and frontend.
 
 ### 1.6 Verify on Block Explorer (Optional)
 
+If you deployed without `--verify` or verification failed, you can verify manually:
+
 ```bash
-yarn hardhat verify --network zgTestnet DEPLOYED_CONTRACT_ADDRESS
+yarn hardhat ignition verify chain-16602 --network zgTestnet
 ```
 
 View on explorer: https://chainscan-galileo.0g.ai
